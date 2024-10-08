@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import db from "@/app/db"
 
 const handler = NextAuth({
     providers: [
@@ -15,6 +16,34 @@ const handler = NextAuth({
                 if(!email) {
                     return false;
                 }
+
+                const userDb = await db.user.findFirst({
+                    where: {
+                        username: email
+                    }
+                })
+
+                if( userDb ) {
+                    return true;    
+                }
+
+                await db.user.create({
+                    data: {
+                        username: email,
+                        provider: "Google",
+                        solWallet: {
+                            create: {
+                                publicKey: "",
+                                privateKey: ""
+                            }
+                        },
+                        inrWallet: {
+                            create: {
+                                balance: 0
+                            }
+                        }
+                    }
+                })
             }
             return true
           },
