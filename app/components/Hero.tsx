@@ -1,3 +1,7 @@
+"use client"
+
+import { signIn } from "next-auth/react"
+import { SecondaryButton } from "./Button"
 
 
 export const Hero = () => {
@@ -10,9 +14,17 @@ export const Hero = () => {
                 Revolution
             </span> 
         </div>
-        <div>
+        <div className="flex justify-center pt-4 text-2xl text-slate-500">
             Create a frictionless wallet from India with just a Google Account.
+        </div>
+        <div className="flex justify-center pt-2 text-2xl text-slate-500">                  
             Convert your INR into Cryptocurreny
+        </div>
+
+        <div className="pt-4 flex justify-center">
+            <SecondaryButton onClick={() => {
+                signIn("google")
+            }}>Login with Google</SecondaryButton>
         </div>
     </div>
 }
